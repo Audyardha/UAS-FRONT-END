@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Pelukis - Seni Lukis</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet">
+    <link rel="stylesheet" href="/css/pelukis.css">
+    <style>
+        .popup-form {
+            display: block;
+            position: relative;
+            margin: 50px auto;
+            background-color: #ffffff;
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.5);
+            padding: 20px;
+            width: 400px;
+            border-radius: 8px;
+        }
+        th, td {
+            text-align: center;
+        }
+        th {
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <header class="container-fluid">
+        <div class="row">
+            <div class="col-sm-8">
+                <h1>Edit Pelukis</h1>
+            </div>
+            <div class="col-sm-4">
+                <nav>
+                    <ul class="nav nav-pills pull-right">
+                        <li role="presentation"><a href="home.html">Home</a></li>
+                        <li role="presentation"><a href="pelukis.html">Manajemen Pelukis</a></li>
+                        <li role="presentation"><a href="karya.html">Manajemen Karya</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Form Edit Pelukis -->
+    <div class="popup-form">
+        <h2>Form Edit Pelukis</h2>
+        <form id="form-edit-pelukis">
+            <div class="form-group">
+                <label for="nama">Nama:</label>
+                <input type="text" id="nama" name="nama" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="alamat">Alamat:</label>
+                <input type="text" id="alamat" name="alamat" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+            <a href="pelukis.html" class="btn btn-default">Batal</a>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get('id');
+            const formEditPelukis = document.getElementById('form-edit-pelukis');
+
+            // Ambil data pelukis berdasarkan ID
+            fetch(`https://130.162.195.228/mhs714220020/pelukis/${id}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Network response was not ok");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    document.getElementById('nama').value = data.nama;
+                    document.getElementById('alamat').value = data.alamat;
+                })
+                .catch(error => console.error("Error fetching pelukis data:", error));
+
+            // Simpan perubahan data pelukis
+            formEditPelukis.addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                const formData = new FormData(formEditPelukis);
+                const pelukisData = {
+                    nama: formData.get('nama'),
+                    alamat: formData.get('alamat')
+                };
+
+                fetch(`https://130.162.195.228/mhs714220020/pelukis/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+                    },
+                    body: JSON.stringify(pelukisData)
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Network response was not ok");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("Pelukis successfully updated:", data);
+                    window.location.href = 'pelukis.html'; // Arahkan kembali ke halaman pelukis.html setelah berhasil menyimpan
+                })
+                .catch(error => console.error("Error updating pelukis:", error));
+            });
+        });
+    </script>
+</body>
+</html>

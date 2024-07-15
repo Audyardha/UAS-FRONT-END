@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manajemen Karya - Seni Lukis</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet">
+    <link rel="stylesheet" href="/css/karya.css">
+    <style>
+        .navbar {
+            margin-bottom: 20px;
+        }
+        .btn-tambah {
+            margin-top: 10px;
+        }
+        .popup-form {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+            background-color: #ffffff;
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.5);
+            padding: 20px;
+            width: 400px;
+            border-radius: 8px;
+        }
+        th, td {
+            text-align: center;
+        }
+        th {
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <header class="container-fluid">
+        <div class="row">
+            <div class="col-sm-8">
+                <h1>Manajemen Seni Lukis</h1>
+            </div>
+            <div class="col-sm-4">
+                <nav>
+                    <ul class="nav nav-pills pull-right">
+                        <li role="presentation"><a href="home.html">Home</a></li>
+                        <li role="presentation"><a href="pelukis.html">Manajemen Pelukis</a></li>
+                        <li role="presentation" class="active"><a href="karya.html">Manajemen Karya</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <section class="container">
+        <div class="row">
+            <div class="col-sm-8">
+                <h2>Daftar Karya</h2>
+            </div>
+            <div class="col-sm-4 text-right">
+                <button class="btn btn-success btn-tambah" id="btn-tambah-karya">Tambah Karya</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pop-up form untuk tambah karya -->
+    <div id="popup-form" class="popup-form">
+        <h2>Form Tambah Karya</h2>
+        <form id="form-karya">
+            <div class="form-group">
+                <label for="judul">Judul:</label>
+                <input type="text" id="judul" name="judul" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="pelukisId">ID Pelukis:</label>
+                <input type="text" id="pelukisId" name="pelukisId" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="tahunDibuat">Tahun Dibuat:</label>
+                <input type="text" id="tahunDibuat" name="tahunDibuat" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="media">Media:</label>
+                <input type="text" id="media" name="media" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Simpan Karya Baru</button>
+            <button type="button" class="btn btn-default" onclick="closePopupForm()">Batal</button>
+        </form>
+    </div>
+
+    <section class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID Karya</th>
+                            <th>Judul</th>
+                            <th>ID Pelukis</th>
+                            <th>Tahun Dibuat</th>
+                            <th>Media</th>
+                            <th class="text-center">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="karya-list">
+                        <!-- Data karya akan dimuat di sini -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <footer class="container">
+        <div class="row">
+            <p class="col-sm-4">&copy; 2024 Seni Lukis</p>
+            <ul class="col-sm-8">
+                <li><a href="#"><img src="https://s3.amazonaws.com/codecademy-content/projects/make-a-website/lesson-4/twitter.svg" alt="Twitter"></a></li>
+                <li><a href="#"><img src="https://s3.amazonaws.com/codecademy-content/projects/make-a-website/lesson-4/facebook.svg" alt="Facebook"></a></li>
+                <li><a href="#"><img src="https://s3.amazonaws.com/codecademy-content/projects/make-a-website/lesson-4/instagram.svg" alt="Instagram"></a></li>
+                <li><a href="#"><img src="https://s3.amazonaws.com/codecademy-content/projects/make-a-website/lesson-4/medium.svg" alt="Medium"></a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const tableBody = document.getElementById('karya-list');
+            const popupForm = document.getElementById('popup-form');
+            const btnTambahKarya = document.getElementById('btn-tambah-karya');
+            const formKarya = document.getElementById('form-karya');
+    
+            // Toggle pop-up form visibility when "Tambah Karya" button is clicked
+            btnTambahKarya.addEventListener('click', function() {
+                popupForm.style.display = 'block';
+            });
+    
+            // Function to close pop-up form
+            function closePopupForm() {
+                popupForm.style.display = 'none';
+            }
+    
+            // Function to fetch and display karya data
+            function fetchKaryaData() {
+                fetch("https://130.162.195.228/mhs714220020/karya")
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log("Data fetched from API:", data); // Log the response data
+                        tableBody.innerHTML = ''; // Clear existing table rows
+                        data.forEach(karya => {
+                            console.log("Karya data:", karya); // Log each karya object
+                            tableBody.innerHTML += `
+                                <tr>
+                                    <td>${karya.id}</td>
+                                    <td>${karya.judul}</td>
+                                    <td>${karya.pelukis_id}</td>
+                                    <td>${karya.tahun_dibuat}</td>
+                                    <td>${karya.media}</td>
+                                    <td class="text-center">
+                                        <button class="btn btn-info btn-edit" data-id="${karya.id}">Edit</button>
+                                        <button class="btn btn-danger btn-delete" data-id="${karya.id}">Hapus</button>
+                                    </td>
+                                </tr>
+                            `;
+                        });
+                    })
+                    .catch(error => console.error("Error fetching karya data:", error));
+            }
+    
+            // Fetch karya data when page loads
+            fetchKaryaData();
+    
+            // Event listener for form submission (Tambah Karya)
+            formKarya.addEventListener('submit', function(event) {
+                event.preventDefault();
+    
+                const formData = new FormData(formKarya);
+                const karyaData = {
+                    judul: formData.get('judul'),
+                    pelukis_id: parseInt(formData.get('pelukisId')),
+                    tahun_dibuat: parseInt(formData.get('tahunDibuat')),
+                    media: formData.get('media')
+                };
+    
+                console.log("Submitting karya data:", karyaData); // Log the karya data being submitted
+    
+                fetch("https://130.162.195.228/mhs714220020/karya", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('authToken')}` // Add authorization header
+                    },
+                    body: JSON.stringify(karyaData)
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("Karya successfully added:", data);
+                    fetchKaryaData(); // Refresh table
+                    formKarya.reset(); // Reset form fields
+                    closePopupForm(); // Close pop-up form
+                })
+                .catch(error => console.error("Error adding karya:", error));
+            });
+    
+            // Event listener for delete and edit buttons (using event delegation)
+            document.addEventListener('click', function(event) {
+                if (event.target.classList.contains('btn-delete')) {
+                    const id = event.target.getAttribute('data-id');
+                    if (confirm(`Apakah Anda yakin ingin menghapus karya dengan ID ${id}?`)) {
+                        fetch(`https://130.162.195.228/mhs714220020/karya/${id}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error("Network response was not ok");
+                            }
+                            console.log("Karya successfully deleted");
+                            fetchKaryaData(); // Refresh table
+                        })
+                        .catch(error => console.error("Error deleting karya:", error));
+                    }
+                } else if (event.target.classList.contains('btn-edit')) {
+                    const id = event.target.getAttribute('data-id')
+                    window.location.href = `karyaEdit.html?id=${id}`;
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

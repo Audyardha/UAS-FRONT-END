@@ -1,0 +1,154 @@
+/* Reset and basic styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    background-color: #f0f0f0;
+}
+
+header {
+    background-color:  #7E8EF1;
+    color: #fff;
+    padding: 20px 0;
+    font-family: 'Lucida Calligraphy', cursive;
+}
+
+header .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0;
+}
+
+header nav ul {
+    list-style-type: none;
+    display: flex;
+    justify-content: flex-end;
+}
+
+header nav ul li {
+    margin-left: 20px;
+}
+
+header nav ul li a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+header nav ul li a:hover {
+    color: #fbd1d5;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+footer {
+    background-color: #dddddd;
+    color: #333;
+    padding: 20px 0;
+    text-align: center;
+}
+
+footer .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+footer ul {
+    list-style: none;
+    display: flex;
+    justify-content: flex-end;
+}
+
+footer ul li {
+    margin-left: 10px;
+}
+
+footer ul li img {
+    width: 32px;
+    height: 32px;
+    padding: 4px;
+    background-color: #000000;
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+}
+
+footer ul li img:hover {
+    background-color: #fbd1d5;
+}
+
+/* Styling for the table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table th, table td {
+    border: 1px solid #6c7ee6;
+    padding: 8px;
+    text-align: left;
+}
+
+table th {
+    background-color: #f2f2f2;
+    color: #333333;
+}
+
+/* CSS untuk menyesuaikan warna dan tampilan pada tabel */
+.table-striped tbody > tr:nth-of-type(odd) {
+    background-color: #f9f9f9; /* Warna latar belakang setiap baris ganjil */
+}
+
+.table-striped tbody > tr.blue-row {
+    background-color: #337ab7; /* Warna latar belakang untuk baris berwarna biru */
+    color: #337ab7; /* Warna teks untuk baris berwarna biru */
+}
+
+.table-striped tbody > tr.blue-row td {
+    color: #337ab7; /* Warna teks untuk sel di baris berwarna biru */
+}
+
+.table-striped tbody > tr.blue-row:hover {
+    background-color: #23527c; /* Warna latar belakang saat mouse hover untuk baris biru */
+    color: white; /* Warna teks saat mouse hover untuk baris biru */
+}
+/* CSS untuk menyesuaikan tampilan nama kolom tabel */
+.table-striped thead th {
+    background-color: #337ab7; /* Warna latar belakang untuk nama kolom */
+    color: white; /* Warna teks untuk nama kolom */
+    font-weight: bold; /* Membuat teks nama kolom menjadi tebal */
+    border: 1px solid #ddd; /* Garis tepi untuk nama kolom */
+    text-align: center;
+}
+
+/* CSS untuk menyesuaikan tampilan seluruh sel dalam tabel */
+.table-striped tbody td {
+    border: 1px solid #ddd; /* Garis tepi untuk sel dalam tabel */
+    padding: 8px; /* Ruang di dalam sel */
+    text-align: center;
+}
+
+/* CSS untuk menyesuaikan tampilan nama kolom saat dihover */
+.table-striped thead th:hover {
+    background-color: #23527c; /* Warna latar belakang saat nama kolom dihover */
+}
+
+
+

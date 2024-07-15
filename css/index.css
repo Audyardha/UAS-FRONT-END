@@ -1,0 +1,149 @@
+/* Reset and basic styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    background-color: #f0f0f0;
+}
+
+header {
+    background-color:  #7E8EF1;
+    color: #fff;
+    padding: 20px 0;
+    font-family: 'Lucida Calligraphy', cursive;
+
+}
+
+header .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0;
+}
+
+header nav ul {
+    list-style-type: none;
+    display: flex;
+    justify-content: flex-end;
+}
+
+header nav ul li {
+    margin-left: 20px;
+}
+
+header nav ul li a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+header nav ul li a:hover {
+    color: #fbd1d5;
+}
+
+.jumbotron {
+    background-image: url('https://www.cyberworx.in/images/services/website-startups.jpg');
+    background-size: cover;
+    background-position: center;
+    color: #ffffff;
+    text-align: center;
+    padding: 100px 0;
+    margin-bottom: 30px;
+}
+
+.jumbotron h2 {
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.jumbotron h3 {
+    font-size: 24px;
+    font-weight: 400;
+    margin-bottom: 30px;
+    font-family: 'Lucida Calligraphy', cursive;
+}
+
+.btn-primary {
+    background-color: #ffffff;
+    color: #000000;
+    font-size: 18px;
+    border-radius: 2px;
+    padding: 10px 20px;
+    border: none;
+    text-decoration: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #fbd1d5;
+    color: #ffffff;
+}
+
+.btn-secondary {
+    background-color: #0081ff;
+    color: #fff;
+    font-size: 18px;
+    border-radius: 4px;
+    padding: 15px 30px;
+    border: none;
+    text-decoration: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background-color: #000;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+footer {
+    background-color: #dddddd;
+    color: #333;
+    padding: 20px 0;
+    text-align: center;
+}
+
+footer .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+footer ul {
+    list-style: none;
+    display: flex;
+    justify-content: flex-end;
+}
+
+footer ul li {
+    margin-left: 10px;
+}
+
+footer ul li img {
+    width: 32px;
+    height: 32px;
+    padding: 4px;
+    background-color: #000000;
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+}
+
+footer ul li img:hover {
+    background-color: #fbd1d5;
+}

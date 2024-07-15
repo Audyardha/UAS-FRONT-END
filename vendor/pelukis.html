@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manajemen Pelukis - Seni Lukis</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet">
+    <link rel="stylesheet" href="/css/pelukis.css">
+    <style>
+        .navbar {
+            margin-bottom: 20px; /* Mengatur jarak antara navbar dan konten di bawahnya */
+        }
+        .btn-tambah {
+            margin-top: 10px; /* Mengatur jarak atas tombol "Tambah Pelukis" */
+        }
+        /* Style untuk pop-up form */
+        .popup-form {
+            display: none; /* Secara default form tidak ditampilkan */
+            position: fixed; /* Memastikan form tetap berada di tempat saat scroll */
+            top: 50%; /* Posisi vertikal tengah */
+            left: 50%; /* Posisi horizontal tengah */
+            transform: translate(-50%, -50%); /* Untuk mengatur posisi tepat di tengah */
+            z-index: 1000; /* Menentukan lapisan atas agar tumpukan di atas konten lain */
+            background-color: #ffffff; /* Warna latar belakang */
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.5); /* Bayangan untuk efek pop-up */
+            padding: 20px; /* Ruang dalam form */
+            width: 400px; /* Lebar form */
+            border-radius: 8px; /* Sudut lengkung pada form */
+        }
+        /* Style untuk nama kolom dan isi kolom */
+        th, td {
+            text-align: center; /* Teks berada di tengah */
+        }
+        th {
+            font-weight: bold; /* Font tebal untuk nama kolom */
+            color: #333; /* Warna teks nama kolom */
+        }
+    </style>
+</head>
+<body>
+    <header class="container-fluid">
+        <div class="row">
+            <div class="col-sm-8">
+                <h1>Manajemen Seni Lukis</h1>
+            </div>
+            <div class="col-sm-4">
+                <nav>
+                    <ul class="nav nav-pills pull-right">
+                        <li role="presentation"><a href="home.html">Home</a></li>
+                        <li role="presentation" class="active"><a href="pelukis.html">Manajemen Pelukis</a></li>
+                        <li role="presentation"><a href="karya.html">Manajemen Karya</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <section class="container">
+        <div class="row">
+            <div class="col-sm-8">
+                <h2>Daftar Pelukis</h2>
+            </div>
+            <div class="col-sm-4 text-right">
+                <button class="btn btn-success btn-tambah" id="btn-tambah-pelukis">Tambah Pelukis</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pop-up form untuk tambah pelukis -->
+    <div id="popup-form" class="popup-form">
+        <h2>Form Tambah Pelukis</h2>
+        <form id="form-pelukis">
+            <div class="form-group">
+                <label for="nama">Nama:</label>
+                <input type="text" id="nama" name="nama" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="alamat">Alamat:</label>
+                <input type="text" id="alamat" name="alamat" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Simpan Pelukis Baru</button>
+            <!-- Tombol untuk menutup pop-up form -->
+            <button type="button" class="btn btn-default" onclick="closePopupForm()">Batal</button>
+        </form>
+    </div>
+
+    <section class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID Pelukis</th>
+                            <th>Nama</th>
+                            <th>Alamat</th>
+                            <th class="text-center">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="karya-list">
+                        <!-- Data pelukis akan dimuat di sini -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <footer class="container">
+        <div class="row">
+            <p class="col-sm-4">&copy; 2024 Seni Lukis</p>
+            <ul class="col-sm-8">
+                <li><a href="#"><img src="https://s3.amazonaws.com/codecademy-content/projects/make-a-website/lesson-4/twitter.svg" alt="Twitter"></a></li>
+                <li><a href="#"><img src="https://s3.amazonaws.com/codecademy-content/projects/make-a-website/lesson-4/facebook.svg" alt="Facebook"></a></li>
+                <li><a href="#"><img src="https://s3.amazonaws.com/codecademy-content/projects/make-a-website/lesson-4/instagram.svg" alt="Instagram"></a></li>
+                <li><a href="#"><img src="https://s3.amazonaws.com/codecademy-content/projects/make-a-website/lesson-4/medium.svg" alt="Medium"></a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const tableBody = document.getElementById('karya-list');
+            const popupForm = document.getElementById('popup-form');
+            const btnTambahPelukis = document.getElementById('btn-tambah-pelukis');
+            const formPelukis = document.getElementById('form-pelukis');
+
+            // Toggle pop-up form visibility when "Tambah Pelukis" button is clicked
+            btnTambahPelukis.addEventListener('click', function() {
+                popupForm.style.display = 'block';
+            });
+
+            // Function to close pop-up form
+            function closePopupForm() {
+                popupForm.style.display = 'none';
+            }
+
+            // Function to fetch and display pelukis data
+            function fetchPelukisData() {
+                fetch("https://130.162.195.228/mhs714220020/pelukis")
+                    .then(response => response.json())
+                    .then(data => {
+                        tableBody.innerHTML = ''; // Clear existing table rows
+                        data.forEach(pelukis => {
+                            tableBody.innerHTML += `
+                                <tr>
+                                    <td>${pelukis.id}</td>
+                                    <td>${pelukis.nama}</td>
+                                    <td>${pelukis.alamat}</td>
+                                    <td class="text-center">
+                                        <button class="btn btn-info btn-edit" data-id="${pelukis.id}">Edit</button>
+                                        <button class="btn btn-danger btn-delete" data-id="${pelukis.id}">Hapus</button>
+                                    </td>
+                                </tr>
+                            `;
+                        });
+                    })
+                    .catch(error => console.error("Error fetching pelukis data:", error));
+            }
+
+            // Fetch pelukis data when page loads
+            fetchPelukisData();
+
+            // Event listener for form submission (Tambah Pelukis)
+            formPelukis.addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                const formData = new FormData(formPelukis);
+                const pelukisData = {
+                    nama: formData.get('nama'),
+                    alamat: formData.get('alamat')
+                };
+
+                fetch("https://130.162.195.228/mhs714220020/pelukis", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(pelukisData)
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Network response was not ok");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("Pelukis successfully added:", data);
+                    fetchPelukisData(); // Refresh table
+                    formPelukis.reset(); // Reset form fields
+                    closePopupForm(); // Close pop-up form
+                })
+                .catch(error => console.error("Error adding pelukis:", error));
+            });
+
+            // Event listener for delete and edit buttons (using event delegation)
+            document.addEventListener('click', function(event) {
+                if (event.target.classList.contains('btn-delete')) {
+                    const id = event.target.getAttribute('data-id');
+                    if (confirm(`Apakah Anda yakin ingin menghapus pelukis dengan ID ${id}?`)) {
+                        fetch(`https://130.162.195.228/mhs714220020/pelukis/${id}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error("Network response was not ok");
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            console.log("Pelukis successfully deleted:", data);
+                            fetchPelukisData(); // Refresh table
+                        })
+                        .catch(error => console.error("Error deleting pelukis:", error));
+                    }
+                } else if (event.target.classList.contains('btn-edit')) {
+                    const id = event.target.getAttribute('data-id');
+                    window.location.href = `pelukisEdit.html?id=${id}`;
+                }
+
+            });
+        });
+    </script>
+</body>
+</html>
